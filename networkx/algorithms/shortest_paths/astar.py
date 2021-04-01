@@ -185,3 +185,51 @@ def astar_path_length(G, source, target, heuristic=None, weight="weight"):
     weight = _weight_function(G, weight)
     path = astar_path(G, source, target, heuristic, weight)
     return sum(weight(u, v, G[u][v]) for u, v in zip(path[:-1], path[1:]))
+
+def main():
+    g = nx.Graph()
+    g.add_nodes_from([
+        ('A', {'position': 366}),
+        ('Z', {'position': 374}),
+        ('O', {'position': 380}),
+        ('T', {'position': 329}),
+        ('L', {'position': 244}),
+        ('M', {'position': 241}),
+        ('D', {'position': 242}),
+        ('C', {'position': 160}),
+        ('S', {'position': 253}),
+        ('F', {'position': 178}),
+        ('R', {'position': 193}),
+        ('P', {'position': 98}),
+        ('B', {'position': 0})])
+
+    g.add_edges_from([
+        ('A', 'Z', {'weight': 75}),
+        ('A', 'S', {'weight': 140}),
+        ('A', 'T', {'weight': 118}),
+        ('A', 'Z', {'weight': 75}),
+        ('Z', 'O', {'weight': 71}),
+        ('O', 'S', {'weight': 151}),
+        ('T', 'L', {'weight': 111}),
+        ('L', 'M', {'weight': 70}),
+        ('M', 'D', {'weight': 75}),
+        ('S', 'F', {'weight': 99}),
+        ('S', 'R', {'weight': 80}),
+        ('R', 'C', {'weight': 146}),
+        ('R', 'P', {'weight': 97}),
+        ('C', 'P', {'weight': 120}),
+        ('F', 'B', {'weight': 211}),
+        ('P', 'B', {'weight': 101})
+    ])
+    
+
+    def dist(a, b):
+        (x1, y1) = g.nodes[a]['position']
+        (x2, y2) = g.nodes[b]['position']
+        return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+
+    path = nx.astar_path(g, 'A', 'B', heuristic=dist, weight='weight')
+    print(path)
+    
+if __name__ == '__main__':
+    main()
